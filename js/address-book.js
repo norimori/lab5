@@ -1,5 +1,14 @@
 //Sets up page upon loading and button click events
 $(function() {
+    $('.sort-ui .btn').popover({
+        content: function() {
+            return 'Click to Resort by ' + $(this).html();
+        },
+        container: 'body',
+        trigger: 'hover',
+        placement: 'bottom'
+    });
+
     sortObjArray(Employees.entries, 'last'); //Initially sorted by last name
     render();
 
@@ -19,6 +28,7 @@ function render(entries) {
     var $template = $('.template');
     var $addressBook = $('.address-book');
     
+    $addressBook.hide(); //hide before fadeIn
     $addressBook.empty(); //reset contents
     
     $.each(Employees.entries, function() {
@@ -35,6 +45,7 @@ function render(entries) {
         $instance.removeClass('template'); //make entry visible
         $addressBook.append($instance);
     })
+    $addressBook.fadeIn();
 }
 
 /* sortObjArray()
