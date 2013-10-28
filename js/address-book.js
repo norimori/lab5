@@ -1,7 +1,41 @@
-/* address-book.js
-    this is where you will add your JavaScript to complete Lab 5
-*/
+//Sets up page upon loading and button click events
+$(function() {
+    sortObjArray(Employees.entries, 'last'); //Initially sorted by last name
+    render();
 
+    $('.sort-ui .btn').click(function() {
+        var $sortBtn = $(this);
+        var $sortType = $sortBtn.attr('data-sortby');
+        $('button').siblings('.active').removeClass('active');
+        sortObjArray(Employees.entries, $sortType);
+        render();
+        $sortBtn.addClass('active');
+    }); 
+}); //document set up
+
+//Populates employee template information
+//*@param entries - array of address book entry objects*/
+function render(entries) {
+    var $template = $('.template');
+    var $addressBook = $('.address-book');
+    
+    $addressBook.empty(); //reset contents
+    
+    $.each(Employees.entries, function() {
+        $instance = $template.clone(); //creates template to fill
+        $instance.find('.first').html(this.first); //this = element in array currently iterating over
+        $instance.find('.last').html(this.last);
+        $instance.find('.lead').html(this.title);
+        $instance.find('.dept').html(this.dept);
+        $instance.find('.pic').attr({
+            src: this.pic,
+            alt: 'picture of ' + this.first + ' ' + this.last
+        });
+
+        $instance.removeClass('template'); //make entry visible
+        $addressBook.append($instance);
+    })
+}
 
 /* sortObjArray()
     sorts an array of objects by a given property name
